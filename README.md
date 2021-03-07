@@ -5,6 +5,8 @@
  In this example project 
 
 'use unsafe code' in the project properties box is checked on.
+
  the Imgui.net nuget is installed.
+ 
  the namesspaces are changed and thats pretty much it.
 
