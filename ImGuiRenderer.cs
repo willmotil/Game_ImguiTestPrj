@@ -1,15 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Text;
-
-//namespace Game_ImguiTestPrj
-//{
-//    class ImGuiRenderer
-//    {
-//    }
-//}
-
-
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;

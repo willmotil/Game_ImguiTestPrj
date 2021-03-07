@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\will\\MainFiles\\MyProjects2020\\Game_ImguiTestPrj\\Game_ImguiTestPrj.csproj": {}
+    "C:\\Users\\will\\MainFiles\\GitPrjs\\Game_ImguiTestPrj\\Game_ImguiTestPrj.csproj": {}
   },
   "projects": {
-    "C:\\Users\\will\\MainFiles\\MyProjects2020\\Game_ImguiTestPrj\\Game_ImguiTestPrj.csproj": {
+    "C:\\Users\\will\\MainFiles\\GitPrjs\\Game_ImguiTestPrj\\Game_ImguiTestPrj.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\will\\MainFiles\\MyProjects2020\\Game_ImguiTestPrj\\Game_ImguiTestPrj.csproj",
+        "projectUniqueName": "C:\\Users\\will\\MainFiles\\GitPrjs\\Game_ImguiTestPrj\\Game_ImguiTestPrj.csproj",
         "projectName": "Game_ImguiTestPrj",
-        "projectPath": "C:\\Users\\will\\MainFiles\\MyProjects2020\\Game_ImguiTestPrj\\Game_ImguiTestPrj.csproj",
+        "projectPath": "C:\\Users\\will\\MainFiles\\GitPrjs\\Game_ImguiTestPrj\\Game_ImguiTestPrj.csproj",
         "packagesPath": "C:\\Users\\will\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\will\\MainFiles\\MyProjects2020\\Game_ImguiTestPrj\\obj\\",
+        "outputPath": "C:\\Users\\will\\MainFiles\\GitPrjs\\Game_ImguiTestPrj\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

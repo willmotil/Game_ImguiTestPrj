@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/cJg5ZWxpfooPWpiq5GA9Bt58PbFmYH8zbDPd8x7m0Q1O/ivdRvooGDcbCqhOHrrhKBtkxn8r3jVnP2eFbKWSA==",
+  "dgSpecHash": "IZYCF67gcs1C3j/VpYEJEyYpDZ/A+OZoN5hoThif3uokcQBE1ThtivaYf8E00/m+JtDXEwsBPTT4FhKHuPaG/Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\will\\MainFiles\\MyProjects2020\\Game_ImguiTestPrj\\Game_ImguiTestPrj.csproj",
+  "projectFilePath": "C:\\Users\\will\\MainFiles\\GitPrjs\\Game_ImguiTestPrj\\Game_ImguiTestPrj.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\will\\.nuget\\packages\\imgui.net\\1.78.0\\imgui.net.1.78.0.nupkg.sha512",
     "C:\\Users\\will\\.nuget\\packages\\monogame.content.builder.task\\3.8.0.1641\\monogame.content.builder.task.3.8.0.1641.nupkg.sha512",
