@@ -13,66 +13,91 @@ namespace Game_ImguiTestPrj
     /// </summary>
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private ImGuiRenderer _imGuiRenderer;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
+        private ImGuiRenderer imGuiRenderer;
+        private IntPtr imGuiTexture;
 
-        private Texture2D _xnaTexture;
-        private IntPtr _imGuiTexture;
+        private Texture2D xnaTexture;
+        public Texture2D texMgLogo;
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 1024;
-            _graphics.PreferredBackBufferHeight = 768;
-            _graphics.PreferMultiSampling = true;
+            graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferMultiSampling = true;
 
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            _imGuiRenderer = new ImGuiRenderer(this);
-            _imGuiRenderer.RebuildFontAtlas();
+            imGuiRenderer = new ImGuiRenderer(this);
+            imGuiRenderer.RebuildFontAtlas();
 
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            // Texture loading example
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            // Texture loading example
+            SetImguiTexture();
+
+            Content.RootDirectory = "Content";
+            texMgLogo = Content.Load<Texture2D>("TestMgLogo");
+
+            base.LoadContent();
+        }
+
+        public void SetImguiTexture()
+        {
+            // Texture loading example.
             // First, load the texture as a Texture2D (can also be done using the XNA/FNA content pipeline)
-            _xnaTexture = CreateTexture(GraphicsDevice, 300, 150, pixel =>
+            xnaTexture = CreateTexture(GraphicsDevice, 300, 150, pixel =>
             {
                 var red = (pixel % 300) / 2;
                 return new Color(red, 1, 1);
             });
 
             // Then, bind it to an ImGui-friendly pointer, that we can use during regular ImGui.** calls (see below)
-            _imGuiTexture = _imGuiRenderer.BindTexture(_xnaTexture);
-
-            base.LoadContent();
+            imGuiTexture = imGuiRenderer.BindTexture(xnaTexture);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(new Color(clear_color.X, clear_color.Y, clear_color.Z));
 
-            // Call BeforeLayout first to set things up
-            _imGuiRenderer.BeforeLayout(gameTime);
+            DrawSpriteBatches(gameTime);
 
-            // Draw our UI
-            ImGuiLayout();
-
-            // Call AfterLayout now to finish up and draw all the things
-            _imGuiRenderer.AfterLayout();
+            DrawUi(gameTime);
 
             base.Draw(gameTime);
         }
 
+        public void DrawSpriteBatches(GameTime gameTime)
+        {
+            spriteBatch.Begin();
+
+            spriteBatch.Draw(texMgLogo, new Rectangle(10, 10, 200, 200), Color.White);
+
+            spriteBatch.End();
+        }
+
+        public void DrawUi(GameTime gameTime)
+        {
+            // Call BeforeLayout first to set things up
+            imGuiRenderer.BeforeLayout(gameTime);
+            // Draw our UI
+            ImGuiLayout();
+            // Call AfterLayout now to finish up and draw all the things
+            imGuiRenderer.AfterLayout();
+        }
+
         // Direct port of the example at https://github.com/ocornut/imgui/blob/master/examples/sdl_opengl2_example/main.cpp
         private float f = 0.0f;
-
         private bool show_test_window = false;
         private bool show_another_window = false;
         private Num.Vector3 clear_color = new Num.Vector3(114f / 255f, 144f / 255f, 154f / 255f);
@@ -93,7 +118,7 @@ namespace Game_ImguiTestPrj
                 ImGui.InputText("Text input", _textBuffer, 100);
 
                 ImGui.Text("Texture sample");
-                ImGui.Image(_imGuiTexture, new Num.Vector2(300, 150), Num.Vector2.Zero, Num.Vector2.One, Num.Vector4.One, Num.Vector4.One); // Here, the previously loaded texture is used
+                ImGui.Image(imGuiTexture, new Num.Vector2(300, 150), Num.Vector2.Zero, Num.Vector2.One, Num.Vector4.One, Num.Vector4.One); // Here, the previously loaded texture is used
             }
 
             // 2. Show another simple window, this time using an explicit Begin/End pair
@@ -117,7 +142,6 @@ namespace Game_ImguiTestPrj
         {
             //initialize a texture
             var texture = new Texture2D(device, width, height);
-
             //the array holds the color for each pixel in the texture
             Color[] data = new Color[width * height];
             for (var pixel = 0; pixel < data.Length; pixel++)
@@ -125,10 +149,8 @@ namespace Game_ImguiTestPrj
                 //the function applies the color according to the specified pixel
                 data[pixel] = paint(pixel);
             }
-
             //set the color
             texture.SetData(data);
-
             return texture;
         }
     }
