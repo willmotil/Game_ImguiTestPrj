@@ -53,4 +53,3 @@ C:\Users\will\MainFiles\GitPrjs\Game_ImguiTestPrj\obj\Debug\netcoreapp3.1\Game_I
 C:\Users\will\MainFiles\GitPrjs\Game_ImguiTestPrj\obj\Debug\netcoreapp3.1\Game_ImguiTestPrj.dll
 C:\Users\will\MainFiles\GitPrjs\Game_ImguiTestPrj\obj\Debug\netcoreapp3.1\Game_ImguiTestPrj.pdb
 C:\Users\will\MainFiles\GitPrjs\Game_ImguiTestPrj\obj\Debug\netcoreapp3.1\Game_ImguiTestPrj.genruntimeconfig.cache
-C:\Users\will\MainFiles\GitPrjs\Game_ImguiTestPrj\obj\Debug\netcoreapp3.1\Game_ImguiTestPrj.csprojAssemblyReference.cache
