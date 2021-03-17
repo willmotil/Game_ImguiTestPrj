@@ -10,3 +10,24 @@
  
  the namesspaces are changed and thats pretty much it.
 
+
+ .
+ Quirks found...
+ .
+
+ When attempting to add a menubar
+
+                 if (ImGui.BeginMenuBar())
+                {
+                    if (ImGui.BeginMenu("Menu primary"))
+                    {
+                        ImGui.MenuItem("menubar primary menu item");
+                        ImGui.EndMenu();
+                    }
+
+Beware that in order for it to work the window call itself has to have the additional parameters.
+
+            if (ImGui.Begin("Menubar window")) {              // pretty much everything else will work but the menubar.
+
+            if (ImGui.Begin("Menubar window", ref windowIsVisible, ImGuiWindowFlags.MenuBar)) {               // do this instead.
+
