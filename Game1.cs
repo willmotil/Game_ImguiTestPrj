@@ -13,26 +13,28 @@ namespace Game_ImguiTestPrj
     /// </summary>
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private ImGuiRenderer _imGuiRenderer;
+        private GraphicsDeviceManager graphics;
+        private ImGuiRenderer imGuiRenderer;
 
         private Texture2D _xnaTexture;
         private IntPtr _imGuiTexture;
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 1024;
-            _graphics.PreferredBackBufferHeight = 768;
-            _graphics.PreferMultiSampling = true;
-
+            graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferMultiSampling = true;
+            graphics.SynchronizeWithVerticalRetrace = false;
+            Window.AllowUserResizing = true;
+            IsFixedTimeStep = false;
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            _imGuiRenderer = new ImGuiRenderer(this);
-            _imGuiRenderer.RebuildFontAtlas();
+            imGuiRenderer = new ImGuiRenderer(this);
+            imGuiRenderer.RebuildFontAtlas();
 
             base.Initialize();
         }
@@ -49,7 +51,7 @@ namespace Game_ImguiTestPrj
             });
 
             // Then, bind it to an ImGui-friendly pointer, that we can use during regular ImGui.** calls (see below)
-            _imGuiTexture = _imGuiRenderer.BindTexture(_xnaTexture);
+            _imGuiTexture = imGuiRenderer.BindTexture(_xnaTexture);
 
             base.LoadContent();
         }
@@ -59,13 +61,13 @@ namespace Game_ImguiTestPrj
             GraphicsDevice.Clear(new Color(clear_color.X, clear_color.Y, clear_color.Z));
 
             // Call BeforeLayout first to set things up
-            _imGuiRenderer.BeforeLayout(gameTime);
+            imGuiRenderer.BeforeLayout(gameTime);
 
             // Draw our UI
             ImGuiLayout();
 
             // Call AfterLayout now to finish up and draw all the things
-            _imGuiRenderer.AfterLayout();
+            imGuiRenderer.AfterLayout();
 
             base.Draw(gameTime);
         }
@@ -86,7 +88,8 @@ namespace Game_ImguiTestPrj
                 ImGui.Text("Hello, world!");
                 ImGui.SliderFloat("float", ref f, 0.0f, 1.0f, string.Empty);
                 ImGui.ColorEdit3("clear color", ref clear_color);
-                if (ImGui.Button("Test Window")) show_test_window = !show_test_window;
+                if (ImGui.Button("Test Window"))
+                    show_test_window = !show_test_window;
                 if (ImGui.Button("Another Window")) show_another_window = !show_another_window;
                 ImGui.Text(string.Format("Application average {0:F3} ms/frame ({1:F1} FPS)", 1000f / ImGui.GetIO().Framerate, ImGui.GetIO().Framerate));
 
