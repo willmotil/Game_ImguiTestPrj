@@ -18,8 +18,8 @@ namespace Game_ImguiTestPrj
         private GraphicsDeviceManager graphics;
         private ImGuiRenderer imGuiRenderer;
 
-        private Texture2D _xnaTexture;
-        private IntPtr _imGuiTexture;
+        private Texture2D xnaTexture;
+        private IntPtr imGuiTexture;
 
         public Game2()
         {
@@ -47,14 +47,14 @@ namespace Game_ImguiTestPrj
             // Texture loading example
 
             // First, load the texture as a Texture2D (can also be done using the XNA/FNA content pipeline)
-            _xnaTexture = CreateTexture(GraphicsDevice, 300, 150, pixel =>
+            xnaTexture = CreateTexture(GraphicsDevice, 300, 150, pixel =>
             {
                 var red = (pixel % 300) / 2;
                 return new Color(red, 1, 1);
             });
 
             // Then, bind it to an ImGui-friendly pointer, that we can use during regular ImGui.** calls (see below)
-            _imGuiTexture = imGuiRenderer.BindTexture(_xnaTexture);
+            imGuiTexture = imGuiRenderer.BindTexture(xnaTexture);
 
             base.LoadContent();
         }
@@ -63,21 +63,16 @@ namespace Game_ImguiTestPrj
         {
             GraphicsDevice.Clear(new Color(clear_color.X, clear_color.Y, clear_color.Z));
 
-            // Call BeforeLayout first to set things up
-            imGuiRenderer.BeforeLayout(gameTime);
-
-            // Draw our UI
-            ImGuiLayout();
-
-            // Call AfterLayout now to finish up and draw all the things
-            imGuiRenderer.AfterLayout();
+            imGuiRenderer.BeforeLayout(gameTime); // Call BeforeLayout first to set things up
+            ImGuiLayout(); // Draw our UI
+            imGuiRenderer.AfterLayout(); // Call AfterLayout now to finish up and draw all the things
 
             base.Draw(gameTime);
         }
 
         // Direct port of the example at https://github.com/ocornut/imgui/blob/master/examples/sdl_opengl2_example/main.cpp
 
-        private bool windowIsVisible = true;
+        private bool windowIsVisible = false;
         private float sliderFloat = 0.0f;
         string sliderFloatString = "";
         private bool show_test_window = false;
@@ -90,8 +85,13 @@ namespace Game_ImguiTestPrj
         bool[] isCurrentSelectedItems = new bool[] { false, false, false };
         string comboBoxMultiSelectedTextPreviewValue = "Multi Selectable Combo #of selected items: 0";
 
+        int currentSelectedRadioButton = 0;
+
         bool isCheckBoxToggledOn = false;
 
+        //
+        // https://pthom.github.io/imgui_manual_online/manual/imgui_manual.html
+        //
         protected virtual void ImGuiLayout()
         {
             // 1. Show a simple window
@@ -116,38 +116,61 @@ namespace Game_ImguiTestPrj
 
             // ~~~~~~~~~~~~~~~~~~~~~~~
             // New Window ....
+            // https://github.com/ocornut/imgui/blob/a1a39c632aaf2a1ab7fe09961748a2f25816fb6e/imgui_demo.cpp#L339
             // ~~~~~~~~~~~~~~~~~~~~~~~
-            if (ImGui.Begin("Menubar window", ref windowIsVisible, ImGuiWindowFlags.MenuBar))
+            ImGui.StyleColorsLight();
+            if (ImGui.Begin("Menubar window",  ImGuiWindowFlags.MenuBar))  // the boolean places a exit window button on the corner.
             {
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~
                 // Menu Bar ....
                 // ~~~~~~~~~~~~~~~~~~~~~~~
+                //ImGui.PushID(0);
+                ImGui.PushStyleColor(0, new Num.Vector4(1f, .5f, .5f, .9f));  // 0 is text.
+                ImGui.PushStyleColor(ImGuiCol.Border, new Num.Vector4(.5f, 1f, .5f, .9f));
+                ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Num.Vector4(.75f, 1f, .75f, .99f));
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Num.Vector4(.95f, 25f, .99f, .99f));
                 if (ImGui.BeginMenuBar())
                 {
                     if (ImGui.BeginMenu("Menu primary"))
                     {
-                        ImGui.MenuItem("menubar primary menu item");
+                        ImGui.MenuItem("menubar primary menu itemA");
                         ImGui.EndMenu();
                     }
                     if (ImGui.BeginMenu("Examples"))
                     {
-                        ImGui.MenuItem("menubar Examples menu item");
+                        ImGui.MenuItem("menubar Examples menu itemA");
+                        ImGui.MenuItem("menubar Examples menu itemB");
                         ImGui.EndMenu();
                     }
                     if (ImGui.BeginMenu("Tools"))
                     {
-                        ImGui.MenuItem("menubar tools menu item");
+                        ImGui.MenuItem("menubar tools menu itemA");
+                        ImGui.MenuItem("menubar tools menu itemB");
+                        ImGui.MenuItem("menubar tools menu itemC");
                         ImGui.EndMenu();
                     }
+
                     ImGui.EndMenuBar();
                 }
+                ImGui.PopStyleColor();
+                ImGui.PopStyleColor();
+                ImGui.PopStyleColor();
+                ImGui.PopStyleColor();
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~
                 // text label ....
                 // ~~~~~~~~~~~~~~~~~~~~~~~
                 ImGui.Text("Hello, world!");
                 ImGui.Text(string.Format("Application average {0:F3} ms/frame ({1:F1} FPS)", 1000f / ImGui.GetIO().Framerate, ImGui.GetIO().Framerate));
+
+                // ~~~~~~~~~~~~~~~~~~~~~~~
+                // button ....
+                // ~~~~~~~~~~~~~~~~~~~~~~~
+                if (ImGui.Button("Button"))
+                {
+
+                }
 
                 // ~~~~~~~~~~~~~~~~~~~~~~~
                 // text input ....
@@ -177,7 +200,7 @@ namespace Game_ImguiTestPrj
                 // ~~~~~~~~~~~~~~~~~~~~~~~
                 // Radio box ....
                 // ~~~~~~~~~~~~~~~~~~~~~~~
-                if (ImGui.RadioButton("Radio button label", true))
+                if (ImGui.RadioButton("Radio button label", ref currentSelectedRadioButton, 0))
                 {
 
                 }
@@ -246,7 +269,7 @@ namespace Game_ImguiTestPrj
                 // texture box ....
                 // ~~~~~~~~~~~~~~~~~~~~~~~
                 ImGui.Text("Texture sample");
-                ImGui.Image(_imGuiTexture, new Num.Vector2(300, 150), Num.Vector2.Zero, Num.Vector2.One, Num.Vector4.One, Num.Vector4.One); // Here, the previously loaded texture is used
+                ImGui.Image(imGuiTexture, new Num.Vector2(300, 150), Num.Vector2.Zero, Num.Vector2.One, Num.Vector4.One, Num.Vector4.One); // Here, the previously loaded texture is used
 
                 
                 
@@ -287,7 +310,6 @@ namespace Game_ImguiTestPrj
         {
             //initialize a texture
             var texture = new Texture2D(device, width, height);
-
             //the array holds the color for each pixel in the texture
             Color[] data = new Color[width * height];
             for (var pixel = 0; pixel < data.Length; pixel++)
@@ -295,10 +317,8 @@ namespace Game_ImguiTestPrj
                 //the function applies the color according to the specified pixel
                 data[pixel] = paint(pixel);
             }
-
             //set the color
             texture.SetData(data);
-
             return texture;
         }
     }
